@@ -2,19 +2,6 @@
 
 Pedestrians follow recorded sidewalk routes outside combat. Designed for Foundry VTT v13 and system independent; intended for your Marvel Multiverse RPG table. No dependencies, actor data, or artwork included. Uses your existing pedestrian tokens.
 
-## Install
-
-1. Extract this ZIP. Copy the `living-sidewalks` folder into your Foundry User Data `Data/modules/` folder. The resulting path must be `Data/modules/living-sidewalks/module.json` (no extra nested folder).
-2. Restart Foundry. In your world, open Manage Modules and enable **Living Sidewalks**.
-3. Open and activate a test scene as GM.
-4. Press **Ctrl+Shift+P** to open controls. You can rebind this in Configure Controls. Alternatively, create a Script macro containing:
-
-```js
-game.modules.get('living-sidewalks').api.panel();
-```
-
-This is a manual-install ZIP; it is not a hosted manifest URL.
-
 ## Record a sidewalk
 
 1. Place an ordinary pedestrian token at the route's starting position. Select it.
@@ -45,20 +32,6 @@ Loop mode connects the final waypoint directly to the first. Record the entire c
 - Begin with 5–10 pedestrians and assess performance with connected players. It batches updates at most five times per second; large crowds and complex lighting can be expensive. Tokens use their existing vision and lighting settings.
 - Recording is local to the GM browser. Saving persists the route. Reloading or changing scenes before saving loses the unfinished recording and leaves that token's automation disabled.
 - The control panel uses Foundry's legacy Dialog compatibility API in v13. v12/v14 compatibility is not declared.
-
-## Verification
-
-Six automated tests passed with Node's built-in test runner: waypoint corners, route reversal, looping, duplicate points, combat scope, and a mocked scheduler covering pause/resume, GM authority, walls, selection, and active-scene checks. JavaScript syntax check passed. This build has **not been run inside a licensed Foundry installation** or tested with the Marvel game system or other modules.
-
-Before your game, verify in a duplicate scene with a GM and player browser:
-
-1. Record a route with a right-angle corner. Confirm both browsers see the pedestrian follow it.
-2. Start combat mid-walk. Confirm traffic stops; manually move a pedestrian during its turn.
-3. End combat. Confirm walking resumes; test game pause and scene pause separately.
-4. Add a movement wall across the path; confirm it stops. Remove it and confirm motion resumes.
-5. Reload and verify the saved route remains. Check for errors in the browser console.
-
-Run automated checks from this folder with `node --test tests/*.test.mjs`.
 
 ## API references
 
