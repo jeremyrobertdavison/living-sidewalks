@@ -1,0 +1,28 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+const hooks = new Map();
+globalThis.Hooks = {once: (n,f)=>hooks.set(n,f), on:(n,f)=>hooks.set(n,f)};
+let tick, writes = 0, blocked = false;
+globalThis.setInterval = f => {tick=f;};
+const route = {enabled:true,points:[{x:0,y:0},{x:100,y:0}],index:1,speed:0.5};
+const scene = {id:'street',active:true,grid:{size:100},getFlag:()=>false, updateEmbeddedDocuments:async()=>{writes++;}};
+const doc = {id:'t',x:0,y:0,hidden:false,parent:scene,getFlag:()=>route};
+const token = {document:doc,w:100,h:100,checkCollision:()=>blocked};
+globalThis.canvas = {ready:true,scene,tokens:{placeables:[token]}};
+const module = {};
+globalThis.game = {paused:false,user:{id:'a',isGM:true},users:[{id:'a',isGM:true,active:true},{id:'b',isGM:true,active:true}],combats:[],modules:{get:()=>module}};
+globalThis.ui = {notifications:{info:()=>{},error:()=>{}}};
+await import('../scripts/main.mjs');
+hooks.get('ready')();
+test('scheduler moves once, pauses for combat, resumes, and respects GM ownership and walls', async () => {
+  await tick(); assert.equal(writes,1);
+  game.combats=[{started:true,scene:{id:'street'}}];
+  await tick(); assert.equal(writes,1);
+  assert.equal(hooks.get('preUpdateToken')(doc,{}, {livingSidewalks:true}),false);
+  game.combats=[]; await tick(); assert.equal(writes,2);
+  game.paused=true; await tick(); assert.equal(writes,2);
+  game.paused=false; game.user.id='b'; await tick(); assert.equal(writes,2);
+  game.user.id='a'; blocked=true; await tick(); assert.equal(writes,2);
+  blocked=false; token.controlled=true; await tick(); assert.equal(writes,2);
+  token.controlled=false; scene.active=false; await tick(); assert.equal(writes,2);
+});

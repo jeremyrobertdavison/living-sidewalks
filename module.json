@@ -1,0 +1,9 @@
+{
+  "id": "living-sidewalks",
+  "title": "Living Sidewalks",
+  "description": "Recorded pedestrian token routes with automatic combat pause. Preview build for Foundry v13.",
+  "version": "0.1.0",
+  "compatibility": {"minimum": "13", "maximum": "13"},
+  "authors": [{"name": "Jeremy's Table"}],
+  "esmodules": ["scripts/main.mjs"]
+}
