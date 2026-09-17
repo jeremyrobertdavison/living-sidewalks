@@ -1,4 +1,4 @@
-# Living Sidewalks — 0.1.0 preview
+# Living Sidewalks — v1.0.0
 
 Pedestrians follow recorded sidewalk routes outside combat. Designed for Foundry VTT v13 and system independent; intended for your Marvel Multiverse RPG table. No dependencies, actor data, or artwork included. Uses your existing pedestrian tokens.
 
