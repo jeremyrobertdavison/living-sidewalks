@@ -1,3 +1,12 @@
+# 2.0.0 — Foundry 14 distribution
+
+- Set module version to 2.0.0 and release tag to v2.0.0.
+- Add stable manifest, repository, and version-specific download URLs.
+- Provide separate source and installable ZIPs, plus standalone module.json.
+- Place module.json at the root of the installable ZIP.
+- Include public installation and browser-only GitHub publishing instructions.
+- Runtime is unchanged from the v14 0.2.0 preview; live Foundry validation remains pending.
+
 # 0.2.0 — Foundry 14 preview
 
 - Target Foundry 14 in the manifest; keep the existing module ID and route flags.

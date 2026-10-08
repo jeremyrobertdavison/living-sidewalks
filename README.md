@@ -1,25 +1,28 @@
-# Living Sidewalks — 0.2.0 — Foundry 14 preview
+# Living Sidewalks
 
-Pedestrians follow recorded sidewalk routes outside combat. Designed for Foundry VTT v14 and system independent; intended for your Marvel Multiverse RPG table. No dependencies, actor data, or artwork included. Uses your existing pedestrian tokens.
+Living Sidewalks animates pedestrian tokens along recorded routes outside combat. Traffic pauses when combat starts, leaving the GM free to move pedestrians during their turns, and resumes when combat ends.
 
-## Upgrade from 0.1.0
+Version **2.0.0** targets **Foundry VTT 14**. It is system independent and includes no actors or artwork. Use your own pedestrian tokens.
 
-Keep the folder/module ID `living-sidewalks`. Saved route flags are unchanged, so existing routes are retained. Back up your world, close the world, replace the module folder with this release, restart Foundry, and reopen the world. Check in a duplicate scene first. This release does not migrate or modify actors or system data.
+## Install through Foundry
 
-For a GitHub-hosted install, publish this release's files in the repository you use for the module, retaining your actual `manifest`, `download`, and `url` fields. This package has no invented repository URLs and has not been uploaded to GitHub. Once a hosted manifest points to the new ZIP, use Foundry Setup to update/install it. The supplied ZIP contains the `living-sidewalks/` module directory, including `module.json`.
+From Foundry Setup, choose **Add-on Modules → Install Module**, paste the following manifest URL, and install:
 
-## Install
+```
+https://github.com/jeremyrobertdavison/living-sidewalks/releases/latest/download/module.json
+```
 
-1. Extract this ZIP. Copy the `living-sidewalks` folder into your Foundry User Data `Data/modules/` folder. The resulting path must be `Data/modules/living-sidewalks/module.json` (no extra nested folder).
-2. Restart Foundry. In your world, open Manage Modules and enable **Living Sidewalks**.
-3. Open and activate a test scene as GM.
-4. Press **Ctrl+Shift+P** to open controls. You can rebind this in Configure Controls. Alternatively, create a Script macro containing:
+Enable **Living Sidewalks** in your world's Manage Modules dialog. Open and activate a scene as GM, then press **Ctrl+Shift+P**. The shortcut can be changed in Configure Controls. Alternatively, create a Script macro:
 
 ```js
 game.modules.get('living-sidewalks').api.panel();
 ```
 
-This is a manual-install ZIP; it is not a hosted manifest URL.
+The install URL becomes available after the public GitHub release is published with `module.json` and `living-sidewalks-v2.0.0.zip` attached. For manual installation, extract the release ZIP into `Data/modules/living-sidewalks/` so that `module.json` is directly inside that folder, then restart Foundry.
+
+## Updating an earlier installation
+
+Use **Update** on the module in Foundry Setup. Older preview packages omitted a manifest URL, so their Update button may not discover this release. In that case, close the world and use **Install Module** with the manifest URL above to install the same module ID. If Foundry refuses to overwrite the installed module, back up the world and module folder, uninstall only the module from Setup, and install using the URL above. Re-enable it in the world if necessary. Routes are saved on scene tokens; the module ID and route flag format are unchanged.
 
 ## Record a sidewalk
 
@@ -50,27 +53,18 @@ Loop mode connects the final waypoint directly to the first. Record the entire c
 - Wall collision checks use Foundry movement walls. Other tokens are not obstacles. No collision avoidance, evacuation AI, animation sprites, or locomotion effects are included.
 - Begin with 5–10 pedestrians and assess performance with connected players. It batches updates at most five times per second; large crowds and complex lighting can be expensive. Tokens use their existing vision and lighting settings.
 - Recording is local to the GM browser. Saving persists the route. Reloading or changing scenes before saving loses the unfinished recording and leaves that token's automation disabled.
-- The control panel uses Foundry's DialogV2 and native form fields. This release targets v14 only; use the previous 0.1.0 build for v13.
+- The control panel uses Foundry's DialogV2 and native form fields. This release targets v14 only; use the earlier v13 build for v13.
 
-## Verification
+## Validation status
 
-Fourteen automated tests passed with Node's built-in test runner, covering route geometry, combat scope, a mocked v14 scheduler, in-flight movement, late network responses, manual combat movement, GM authority, scene changes, DialogV2 form callbacks, recording/cancel, and failure handling. JavaScript syntax check passed. This build has **not been run inside a licensed Foundry installation** or tested with the Marvel game system or other modules.
+Fourteen automated tests cover route geometry and mocked Foundry movement/dialog behavior. This release has not been verified inside a live Foundry 14 installation or with a particular game system. Test a duplicate scene with GM and player browsers before session use: confirm route corners, combat freeze/manual movement/resume, game pause, wall blocking, and saved routes after reload.
 
-Before your game, verify in a duplicate scene with a GM and player browser:
+## Development and releases
 
-1. Record a route with a right-angle corner. Confirm both browsers see the pedestrian follow it.
-2. Start combat mid-walk. Confirm traffic stops; manually move a pedestrian during its turn.
-3. End combat. Confirm walking resumes; test game pause and scene pause separately.
-4. Add a movement wall across the path; confirm it stops. Remove it and confirm motion resumes.
-5. Reload and verify the saved route remains. Check for errors in the browser console.
-
-Run automated checks from this folder with `node --test tests/*.test.mjs`.
+Run `node --test tests/*.test.mjs` to run the included tests. See [PUBLISHING.md](PUBLISHING.md) for browser-only GitHub publishing instructions.
 
 ## API references
 
-- Foundry module packaging: https://foundryvtt.com/article/module-development/
-- v14 Token movement, collision and stopAnimation: https://foundryvtt.com/api/v14/classes/foundry.canvas.placeables.Token.html
-- v14 Combat.started: https://foundryvtt.com/api/v14/classes/foundry.documents.Combat.html
-
-- v14 DialogV2: https://foundryvtt.com/api/v14/classes/foundry.applications.api.DialogV2.html
-- v14 movement options: https://foundryvtt.com/api/v14/interfaces/foundry.documents.types.TokenMovementOptions.html
+- [Foundry module packaging](https://foundryvtt.com/article/module-development/)
+- [DialogV2](https://foundryvtt.com/api/v14/classes/foundry.applications.api.DialogV2.html)
+- [Token movement](https://foundryvtt.com/api/v14/classes/foundry.documents.TokenDocument.html)
